@@ -1,0 +1,404 @@
+Clinical Trial Protocol: VELO-SGLT
+
+FICTIONAL DEMO DOCUMENT.
+
+| Protocol title | Efficacy and Safety of Once-Weekly Veltrenatide Versus Placebo as Add-On to SGLT-2 Inhibitor Therapy in Adults with Type 2 Diabetes Mellitus: A 30-Week, Randomized, Double-Blind, Placebo-Controlled Trial |
+| Short title | VELO-SGLT |
+| Protocol number | NW-VLT-3012 |
+| Investigational product | Veltrenatide 1.0 mg, once-weekly subcutaneous injection (fictional GLP-1 receptor agonist) |
+| Sponsor | Northwind Therapeutics (fictional) |
+| Phase | 3b |
+| Version / date | v2.0, final, 21 October 2026 |
+| Registration | To be registered on ClinicalTrials.gov before first participant enrolled |
+
+Table of Contents
+
+1. Summary
+
+2. Flowchart
+
+3. Background information and rationale for the trial
+
+4. Objective(s) and endpoint(s)
+
+5. Trial design
+
+6. Trial population
+
+7. Milestones
+
+8. Methods and assessments
+
+9. Trial supplies
+
+10. Interventions and concomitant illness and medication
+
+11. Adverse events, technical complaints and pregnancies
+
+12. Statistical considerations
+
+13. Ethics
+
+14. Protocol compliance
+
+15. Records
+
+16. Reports and publications
+
+17. Retention of clinical trial documentation
+
+18. Indemnity statement
+
+19. References
+
+1 Summary
+
+Objective. To compare the effect of once-weekly veltrenatide 1.0 mg with placebo on glycemic control after 30 weeks of treatment in adults with type 2 diabetes mellitus (T2DM) inadequately controlled on an SGLT-2 inhibitor, alone or with metformin and/or a sulfonylurea.
+
+Primary endpoint. Change in HbA1c from baseline to Week 30.
+
+Confirmatory secondary endpoint. Change in body weight (kg) from baseline to Week 30.
+
+Key design features.
+
+Multicenter, multinational, randomized, double-blind, placebo-controlled, two-arm, parallel-group trial.
+
+300 participants randomized 1:1 (150 per arm), stratified by background glucose-lowering regimen.
+
+Adults aged 18 to 75 years with HbA1c 7.0% to 10.0% on a stable SGLT-2 inhibitor for at least 90 days.
+
+30 weeks of treatment (8-week dose escalation to 1.0 mg), then a 5-week off-treatment follow-up (35 weeks), plus up to 4 weeks of screening.
+
+Approximately 55 sites in 6 countries: United States, Canada, Mexico, Spain, Japan, and Brazil.
+
+2 Flowchart
+
+| Assessment | Screening (V1) | Wk 0 (V2) | Wk 4 (V3) | Wk 8 (V4) | Wk 12 (V5) | Wk 16 (V6) | Wk 26 (V7) | Wk 30 (V8) | Wk 35 (V9, follow-up) |
+| Informed consent | X |  |  |  |  |  |  |  |  |
+| Eligibility review | X | X |  |  |  |  |  |  |  |
+| Randomization |  | X |  |  |  |  |  |  |  |
+| HbA1c | X | X |  |  | X |  | X | X |  |
+| Fasting plasma glucose | X | X | X | X | X | X | X | X | X |
+| Body weight, waist | X | X | X | X | X | X | X | X | X |
+| Vital signs | X | X | X | X | X | X | X | X | X |
+| ECG | X |  |  |  |  |  |  | X |  |
+| Lipids |  | X |  |  |  |  |  | X |  |
+| Lipase, calcitonin | X | X |  |  |  |  |  | X |  |
+| Eye examination | X |  |  |  |  |  |  |  |  |
+| Adverse events / hypoglycemia review |  | X | X | X | X | X | X | X | X |
+| Treatment satisfaction questionnaire |  | X |  |  |  |  |  | X |  |
+| Trial product dispensing |  | X | X | X | X | X | X |  |  |
+
+Participants are contacted by phone for safety check-ins at Weeks 2 and 6 and at Weeks 20 and 23.
+
+3 Background information and rationale for the trial
+
+3.1 Background information
+
+3.1.1 Type 2 diabetes
+
+SGLT-2 inhibitors lower glucose through urinary glucose excretion and are widely used in T2DM, including in people with cardiovascular and renal comorbidity. Many patients on an SGLT-2 inhibitor do not reach their glycemic target and need an additional agent.
+
+3.1.2 Glucagon-like peptide-1 (GLP-1)
+
+GLP-1 receptor agonists act through a glucose-dependent mechanism (stimulating insulin secretion, suppressing glucagon, slowing gastric emptying, and reducing appetite) and lower body weight, whereas SGLT-2 inhibitors lower weight through caloric loss. Combining the two classes is therefore expected to improve glycemia and weight beyond either alone.
+
+3.1.3 Veltrenatide
+
+Veltrenatide is a once-weekly GLP-1 receptor agonist analogue. In a 26-week Phase 2 study (n = 214), veltrenatide 1.0 mg reduced HbA1c by 1.6 percentage points from baseline versus 0.2 for placebo, and body weight by 4.9 kg versus 0.8 kg. Nausea was the most common adverse event and was mostly mild to moderate and transient. No new safety signal was identified.
+
+3.2 Rationale for the trial
+
+This Phase 3b trial will confirm efficacy and safety of veltrenatide as add-on to established SGLT-2 inhibitor therapy, a common real-world combination.
+
+4 Objective(s) and endpoint(s)
+
+4.1 Objective(s)
+
+Primary objective. To demonstrate superiority of veltrenatide 1.0 mg versus placebo, both added to SGLT-2 inhibitor therapy, for change in HbA1c from baseline to Week 30.
+
+Secondary objectives. To compare veltrenatide with placebo on body weight, glycemic targets, fasting glucose, blood pressure, and lipids at Week 30, and to evaluate safety and tolerability, including gastrointestinal events, hypoglycemia, pancreatic and gallbladder events, and cardiovascular events.
+
+4.2 Endpoint(s)
+
+4.2.1 Primary endpoint
+
+Change in HbA1c from baseline to Week 30.
+
+4.2.2 Secondary endpoints
+
+| Type | Endpoint | Timepoint |
+| Confirmatory secondary | Change in body weight (kg) | Baseline to Week 30 |
+| Supportive secondary | HbA1c < 7.0% (yes/no) | Week 30 |
+| Supportive secondary | HbA1c ≤ 6.5% (yes/no) | Week 30 |
+| Supportive secondary | Change in fasting plasma glucose, systolic BP, waist circumference, lipids | Baseline to Week 30 |
+| Supportive secondary | Treatment satisfaction questionnaire score | Baseline to Week 30 |
+| Safety | Treatment-emergent adverse events, severe or blood-glucose-confirmed hypoglycemia, lipase, calcitonin, heart rate, ECG | Throughout |
+
+5 Trial design
+
+5.1 Type of trial
+
+Multicenter, multinational, randomized, double-blind, placebo-controlled, two-arm, parallel-group Phase 3b trial. After screening (up to 4 weeks), eligible participants are randomized 1:1 to once-weekly veltrenatide 1.0 mg or volume-matched placebo, each added to their existing SGLT-2 inhibitor regimen. The dose is escalated over 8 weeks: 0.25 mg for 4 weeks, 0.5 mg for 4 weeks, then 1.0 mg maintenance through Week 30.
+
+Participants are randomized through an interactive web response system (IWRS), stratified by background glucose-lowering regimen (SGLT-2 inhibitor alone, or SGLT-2 inhibitor plus metformin and/or sulfonylurea). Participants, investigators, site staff, and the sponsor's study team remain blinded until database lock. Placebo and active pen injectors are visually identical.
+
+5.2 Rationale for trial design
+
+A placebo comparator is used because the objective is to isolate the add-on effect of veltrenatide on top of a stable, effective background therapy. A 30-week duration is sufficient to capture the full HbA1c response and the steady-state weight effect.
+
+5.3 Treatment of subjects
+
+Participants continue their background SGLT-2 inhibitor, and metformin and/or sulfonylurea if applicable, at stable doses throughout the trial. Trial product is self-administered once weekly (see Section 9).
+
+5.4 Treatment after end of trial
+
+After the Week 35 follow-up visit, participants return to the care of their usual physician. No post-trial access to veltrenatide is planned.
+
+6 Trial population
+
+6.1 Number of subjects
+
+300 participants will be randomized (150 per arm). Approximately 400 participants are expected to be screened, assuming a screen failure rate of about 25%.
+
+6.2 Inclusion criteria
+
+1. Age 18 to 75 years at screening.
+
+2. Diagnosis of type 2 diabetes mellitus.
+
+3. On a stable dose of an SGLT-2 inhibitor (any approved agent, at a labeled dose) for at least 90 days before screening, either as monotherapy or in combination with metformin and/or a sulfonylurea at stable doses for the same period.
+
+4. HbA1c 7.0% to 10.0% (53 to 86 mmol/mol), both inclusive, at screening.
+
+5. Body mass index ≥ 25.0 kg/m².
+
+6. Women of childbearing potential must agree to use a highly effective contraceptive method from screening until 5 weeks after the last dose.
+
+7. Able and willing to provide written informed consent and to self-administer the trial injection (or have a trained caregiver do so).
+
+6.3 Exclusion criteria
+
+1. Estimated glomerular filtration rate (eGFR) < 60 mL/min/1.73 m² at screening.
+
+2. Treatment with any glucose-lowering drug other than those permitted in inclusion criterion 3 within 90 days of screening, including any GLP-1 receptor agonist, DPP-4 inhibitor, thiazolidinedione, or insulin (except short-term use for acute illness for ≤ 14 days).
+
+3. Myocardial infarction, stroke, hospitalization for unstable angina or transient ischemic attack within 180 days of screening.
+
+4. Heart failure, New York Heart Association class IV.
+
+5. Personal or family history of medullary thyroid carcinoma or Multiple Endocrine Neoplasia syndrome type 2.
+
+6. History of acute or chronic pancreatitis.
+
+7. Calcitonin ≥ 50 ng/L at screening.
+
+8. Proliferative retinopathy or maculopathy requiring acute treatment.
+
+9. Alanine aminotransferase > 3 times the upper limit of normal.
+
+10. Pregnant, breastfeeding, or intending to become pregnant during the trial.
+
+11. Current or previous (within 12 months) active major depressive episode requiring hospitalization, or history of suicide attempt.
+
+12. Use of weight-lowering medication within 90 days of screening, or bariatric surgery at any time.
+
+13. Known hypersensitivity to veltrenatide or any excipient.
+
+14. Participation in another interventional trial within 90 days of screening.
+
+6.4 Rescue criteria
+
+Participants meeting the following confirmed fasting plasma glucose (FPG) thresholds despite adherence will be offered rescue medication (investigator's choice of an approved agent, excluding GLP-1 receptor agonists) while continuing trial product where possible:
+
+FPG > 270 mg/dL (15.0 mmol/L) from Week 0 to Week 8
+
+FPG > 240 mg/dL (13.3 mmol/L) from Week 9 to Week 16
+
+FPG > 200 mg/dL (11.1 mmol/L) from Week 17 onward HbA1c measured after the start of rescue therapy is handled as described in the statistical analysis plan.
+
+6.5 Criteria for premature discontinuation of trial product
+
+Trial product may be discontinued for: pregnancy; acute pancreatitis (confirmed); calcitonin ≥ 100 ng/L; participant request; or investigator judgment that continuation is not in the participant's interest. Participants who discontinue trial product will be encouraged to remain in the trial and complete all remaining visits.
+
+6.6 Withdrawal from trial
+
+Participants may withdraw consent at any time. Participants who withdraw consent are followed for vital status only if consent permits.
+
+6.7 Subject replacement
+
+Randomized participants who discontinue are not replaced.
+
+6.8 Rationale for trial population
+
+Adults on a stable SGLT-2 inhibitor with HbA1c 7.0% to 10.0% represent patients who need intensification and who can be expected to benefit from a complementary agent. No enrollment targets by sex, race, or ethnicity are set; participants are recruited from the patient populations of the participating sites.
+
+7 Milestones
+
+| Milestone | Planned date (fictional) |
+| Protocol final | October 2026 |
+| First participant first visit | January 2027 |
+| Last participant randomized | July 2027 |
+| Last participant last visit | March 2028 |
+| Database lock | May 2028 |
+| Results posted to ClinicalTrials.gov | Within 12 months of primary completion |
+
+8 Methods and assessments
+
+8.1 Visit plan
+
+The trial consists of nine visits: screening (V1), randomization at Week 0 (V2), and visits at Weeks 4 (V3), 8 (V4), 12 (V5), 16 (V6), 26 (V7), 30 (V8, end of treatment), and 35 (V9, follow-up). Participants are also contacted by phone at Weeks 2, 6, 20, and 23. All assessments are listed in the flowchart (Section 2). Fasting is required for laboratory visits.
+
+8.2 Subject related information
+
+8.2.1 Demography
+
+Age, sex, race, ethnicity, and country are recorded at screening.
+
+8.2.2 Diabetes history and diabetes complications
+
+Duration of T2DM, background glucose-lowering medication (agent, dose, start date), and history of diabetic complications (nephropathy, neuropathy, retinopathy) are recorded at screening.
+
+8.2.3 Concomitant illness and medical history
+
+Relevant medical history and ongoing illnesses are recorded at screening, including cardiovascular disease, pancreatic and gallbladder disease, and thyroid disease.
+
+8.2.4 Concomitant medication
+
+All medication taken within 90 days before screening and during the trial is recorded.
+
+8.3 Efficacy assessments
+
+HbA1c and fasting plasma glucose are analyzed at a central laboratory. Body weight is measured on a calibrated scale, in light clothing without shoes, at each visit. Waist circumference and systolic blood pressure are measured per standardized procedures. The treatment satisfaction questionnaire is completed by the participant at Week 0 and Week 30.
+
+8.4 Safety assessments
+
+Adverse events, vital signs, ECG, lipase, calcitonin, and hypoglycemic episodes are assessed per the flowchart. An eye examination (dilated fundoscopy or fundus photography) is performed at screening.
+
+8.5 Laboratory assessments
+
+All laboratory samples are analyzed at a central laboratory: HbA1c, fasting plasma glucose, lipids, lipase, calcitonin, ALT, and eGFR (screening).
+
+9 Trial supplies
+
+9.1 Trial product
+
+Veltrenatide or matching placebo is supplied in prefilled pen injectors and self-administered subcutaneously in the abdomen, thigh, or upper arm once weekly, on the same day each week, at any time of day, with or without meals. If a dose is missed, it may be taken within 5 days; otherwise the dose is skipped.
+
+9.2 Labelling
+
+Trial product is labelled in accordance with local regulations and ICH GCP, and carries a unique kit number assigned through the IWRS.
+
+9.3 Storage
+
+Pens are stored refrigerated at 2°C to 8°C before first use. In-use pens may be kept at room temperature for up to 28 days.
+
+9.4 Drug accountability
+
+Sites keep a log of all trial product received, dispensed, returned, and destroyed. Participants return used and unused pens at each visit.
+
+10 Interventions and concomitant illness and medication
+
+10.1 Dose escalation and tolerability
+
+Dose escalates every 4 weeks: 0.25 mg (Weeks 0 to 3), 0.5 mg (Weeks 4 to 7), and 1.0 mg from Week 8. If a participant cannot tolerate the next dose step, the investigator may delay escalation by up to 4 weeks or reduce to the previous dose. Participants who cannot tolerate at least the 0.5 mg dose should discontinue trial product.
+
+10.2 Background therapy
+
+Background SGLT-2 inhibitor, metformin, and sulfonylurea doses should remain unchanged during the trial unless safety requires a change. When hypoglycemia occurs in participants on a sulfonylurea, the sulfonylurea dose may be reduced.
+
+10.3 Prohibited medication
+
+GLP-1 receptor agonists, DPP-4 inhibitors, insulin (other than short-term use), weight-loss medications, and systemic corticosteroids (> 14 days) are prohibited.
+
+10.4 Hypoglycemia management
+
+Participants receive education on recognizing and treating hypoglycemia at each visit. Participants on a sulfonylurea receive additional counseling.
+
+11 Adverse events, technical complaints and pregnancies
+
+11.1 Adverse events
+
+All adverse events are recorded from first exposure to trial product through the end of follow-up, graded for severity and assessed for relationship to trial product by the investigator. Serious adverse events are reported to the sponsor within 24 hours of site awareness.
+
+11.2 Events of special interest
+
+Gastrointestinal events, severe or blood-glucose-confirmed hypoglycemia (< 54 mg/dL or requiring third-party assistance), suspected acute pancreatitis (adjudicated), gallbladder events, thyroid neoplasms, and cardiovascular events are collected using dedicated forms.
+
+11.3 Data Monitoring Committee
+
+An independent Data Monitoring Committee (DMC) reviews unblinded safety data approximately every 6 months. The DMC charter, including stopping guidance, is maintained separately.
+
+11.4 Technical complaints
+
+Any defect or malfunction of the pen injector or trial product is reported to the sponsor within 5 working days, and the product is returned for investigation.
+
+11.5 Pregnancies
+
+Pregnancy in a participant must be reported to the sponsor within 14 days of site awareness, and trial product is discontinued. Pregnancy outcome is followed.
+
+12 Statistical considerations
+
+12.1 Sample size
+
+Assuming a true between-group difference in HbA1c change of 0.4 percentage points, a standard deviation of 1.0, a two-sided alpha of 0.05, and 90% power, 132 participants per arm are required. Allowing for approximately 12% attrition, 150 participants per arm (300 total) will be randomized. This sample size gives more than 90% power for the confirmatory secondary endpoint of body weight, assuming a difference of 2.5 kg and a standard deviation of 5.5 kg.
+
+12.2 Analysis sets
+
+The full analysis set (FAS) includes all randomized participants and is the basis for the primary analysis. The safety analysis set includes all randomized participants who received at least one dose of trial product.
+
+12.3 Estimand
+
+The primary estimand is the treatment policy estimand: the difference in mean change in HbA1c from baseline to Week 30 between veltrenatide and placebo, regardless of treatment discontinuation or use of rescue medication. A supplementary estimand will evaluate the effect had all participants remained on assigned treatment without rescue medication.
+
+12.4 Primary analysis
+
+Change in HbA1c from baseline to Week 30 will be analyzed using an ANCOVA model with treatment and stratification factor as fixed effects and baseline HbA1c as a covariate. Missing Week 30 data will be handled by multiple imputation. Results will be combined using Rubin's rules.
+
+12.5 Multiplicity
+
+The primary endpoint and the confirmatory secondary endpoint (body weight) will be tested hierarchically in a fixed order at a two-sided alpha of 0.05. Supportive secondary endpoints are not part of the confirmatory hierarchy and will be reported with nominal p-values.
+
+12.6 Subgroup and sensitivity analyses
+
+Pre-specified subgroups: age (< 65, ≥ 65), sex, baseline HbA1c (< 8.5%, ≥ 8.5%), background regimen, region. Sensitivity analyses will include a mixed model for repeated measures and a tipping-point analysis for missing data.
+
+12.7 Interim analysis
+
+No efficacy interim analysis is planned.
+
+13 Ethics
+
+The trial will be conducted in accordance with ICH E6(R2) Good Clinical Practice, the Declaration of Helsinki, 21 CFR Parts 50, 56, and 312, and applicable local regulations. The protocol and informed consent documents will be approved by an institutional review board or independent ethics committee at each site before enrollment. Written informed consent will be obtained before any trial procedure. Consent documents will describe the purpose, procedures, risks and benefits, alternatives, confidentiality, the voluntary nature of participation, and the right to withdraw at any time without penalty.
+
+14 Protocol compliance
+
+The investigator must conduct the trial in compliance with the protocol. Deviations are documented and reported to the sponsor. Protocol amendments require approval from the sponsor and the relevant IRB or ethics committee and, where required, regulatory authorities, before implementation. An immediate deviation to eliminate an apparent hazard to participants may be made without prior approval and is reported promptly.
+
+15 Records
+
+Data are captured in a validated electronic data capture (eCRF) system. Source documents remain at the site. Central laboratories transfer data electronically. The investigator must permit monitoring, audits, and inspections, including direct access to source data.
+
+16 Reports and publications
+
+Results will be posted to ClinicalTrials.gov within the required timelines and submitted for peer-reviewed publication regardless of outcome.
+
+17 Retention of clinical trial documentation
+
+The investigator retains trial documentation for the period required by local regulations and ICH GCP, and as instructed by the sponsor.
+
+18 Indemnity statement
+
+The sponsor will provide for injury compensation as required by local law.
+
+19 References
+
+1. American Diabetes Association. Standards of Care in Diabetes. Diabetes Care, current edition.
+
+2. ICH E9(R1): Addendum on estimands and sensitivity analysis in clinical trials.
+
+3. FDA Guidance for Industry: Diabetes Mellitus: Developing Drugs and Therapeutic Biologics for Treatment and Prevention.
+
+4. FDA Guidance: Diversity Plans to Improve Enrollment of Participants from
+
+Underrepresented Racial and Ethnic Populations in Clinical Trials.

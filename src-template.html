@@ -1,81 +1,91 @@
-<title>GLP-1 Protocol Optimizer</title>
+<title>Trial Tune</title>
 <meta name="claude:viewport-fit-sides" content="cover">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&family=Source+Serif+4:ital,wght@0,400;0,600;1,400&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&family=Source+Serif+4:wght@400;600;700&display=swap">
 <style>
-/* Layout: sticky toolbar, document column (serif, ~72ch) beside a sidebar of inputs + suggestions */
+/* Layout: sticky toolbar, a bright reading column with a clear heading scale, and a sidebar for inputs and suggestions */
 :root {
-  --bg: #f7f8f8; --paper: #ffffff; --fg: #1c2328; --muted: #5d6a72; --line: #d9dfe3; --soft: #eef1f3;
-  --accent: #1f6a86; --accent-fg: #ffffff;
-  --high: #c2410c; --high-bg: #fdebe2; --med: #b7791f; --med-bg: #fbf1dc; --low: #2b6cb0; --low-bg: #e3edf8;
-  --ok: #2f7d4f; --ok-bg: #e3f2e8; --dim: #8a959c;
+  --bg: #f2f6fb; --paper: #ffffff; --ink: #0f1b2a; --body: #26364a; --muted: #5b6b7f; --line: #dbe4ee; --soft: #eaf1f8;
+  --accent: #0b63ce; --accent-soft: #e4effc; --accent-fg: #ffffff;
+  --high: #d92d20; --high-bg: #fde8e6; --med: #d98200; --med-bg: #fff1d6; --low: #6d4fd6; --low-bg: #eee9fc;
+  --ok: #138a4b; --ok-bg: #dff5e8; --dim: #8b98a8;
   --ui: "IBM Plex Sans", system-ui, -apple-system, sans-serif;
   --mono: "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
   --doc: "Source Serif 4", Georgia, "Times New Roman", serif;
-  --shadow: 0 8px 28px rgba(20, 30, 40, .14);
+  --shadow: 0 10px 30px rgba(15, 27, 42, .16);
+  color-scheme: light;
 }
-@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
-  --bg: #161a1d; --paper: #1e2429; --fg: #e6eaed; --muted: #a3adb4; --line: #333c43; --soft: #262d33;
-  --accent: #5fb3d0; --accent-fg: #0f1a20;
-  --high: #f59e6b; --high-bg: #3a2418; --med: #e2b04f; --med-bg: #362b12; --low: #7fb3ec; --low-bg: #182a3f;
-  --ok: #6ccf8e; --ok-bg: #163222; --dim: #6f7a82; --shadow: 0 8px 28px rgba(0,0,0,.5); color-scheme: dark } }
-:root[data-theme="dark"] {
-  --bg: #161a1d; --paper: #1e2429; --fg: #e6eaed; --muted: #a3adb4; --line: #333c43; --soft: #262d33;
-  --accent: #5fb3d0; --accent-fg: #0f1a20;
-  --high: #f59e6b; --high-bg: #3a2418; --med: #e2b04f; --med-bg: #362b12; --low: #7fb3ec; --low-bg: #182a3f;
-  --ok: #6ccf8e; --ok-bg: #163222; --dim: #6f7a82; --shadow: 0 8px 28px rgba(0,0,0,.5); color-scheme: dark }
-
 * { box-sizing: border-box }
-body { background: var(--bg); color: var(--fg); font: 14px/1.5 var(--ui); margin: 0 }
+body { background: var(--bg); color: var(--body); font: 14px/1.5 var(--ui); margin: 0 }
 body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 10; background: var(--paper) }
 button { font: inherit; cursor: pointer }
-button:focus-visible, input:focus-visible, textarea:focus-visible, select:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px }
+button:focus-visible, input:focus-visible, textarea:focus-visible, mark:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px }
 h1, h2, h3 { margin: 0; text-wrap: balance }
-.lbl { font-size: 11px; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); font-weight: 600 }
+.lbl { font-size: 11px; letter-spacing: .07em; text-transform: uppercase; color: var(--muted); font-weight: 600 }
 
 /* ── Toolbar ── */
 .bar { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 5; background: var(--paper); border-bottom: 1px solid var(--line);
   padding-block: 10px; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px));
   display: flex; align-items: center; gap: 14px; flex-wrap: wrap }
-.bar h1 { font-size: 16px; font-weight: 600 }
-.bar h1 small { font-weight: 400; color: var(--muted); font-size: 12px; margin-left: 8px }
-.status { color: var(--muted); font-size: 13px; flex: 1; min-width: 0 }
+.brand { display: flex; align-items: baseline; gap: 10px; min-width: 0 }
+.brand h1 { font-size: 20px; font-weight: 700; color: var(--ink); letter-spacing: -.01em }
+.brand h1 i { font-style: normal; color: var(--accent) }
+.brand small { color: var(--muted); font-size: 12px }
+.status { color: var(--muted); font-size: 13px; flex: 1; min-width: 200px }
 .status.busy::before { content: ""; display: inline-block; width: 10px; height: 10px; border: 2px solid var(--accent); border-right-color: transparent; border-radius: 50%; margin-right: 8px; vertical-align: -1px; animation: spin .8s linear infinite }
 @keyframes spin { to { transform: rotate(360deg) } }
 @media (prefers-reduced-motion: reduce) { .status.busy::before { animation: none } }
-.btn { border: 1px solid var(--line); background: var(--paper); color: var(--fg); border-radius: 6px; padding: 7px 12px; font-weight: 500 }
+.btn { border: 1px solid var(--line); background: var(--paper); color: var(--ink); border-radius: 6px; padding: 7px 13px; font-weight: 500 }
 .btn:hover { background: var(--soft) }
 .btn:disabled { opacity: .5; cursor: default }
 .btn.primary { background: var(--accent); color: var(--accent-fg); border-color: var(--accent) }
-.btn.primary:hover { filter: brightness(1.08) }
-.btn.sm { padding: 4px 9px; font-size: 12px }
+.btn.primary:hover { filter: brightness(1.1) }
+.btn.sm { padding: 4px 10px; font-size: 12px }
 
 /* ── Main grid ── */
-.main { display: grid; grid-template-columns: minmax(0, 1fr) 360px; gap: 24px;
-  padding-block: 20px 60px; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); max-width: 1320px; margin: 0 auto }
-@media (max-width: 900px) { .main { grid-template-columns: 1fr } .side { order: -1 } }
+.main { display: grid; grid-template-columns: minmax(0, 1fr) 360px; gap: 24px; align-items: start;
+  padding-block: 22px 60px; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); max-width: 1360px; margin: 0 auto }
+@media (max-width: 960px) { .main { grid-template-columns: 1fr } .side { order: -1 } }
 .side { display: flex; flex-direction: column; gap: 16px; min-width: 0 }
-.panel { background: var(--paper); border: 1px solid var(--line); border-radius: 8px; padding: 14px }
-.panel h2 { font-size: 13px; font-weight: 600; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center }
-details.panel > summary { cursor: pointer; font-weight: 600; font-size: 13px; list-style: none; display: flex; justify-content: space-between }
+.panel { background: var(--paper); border: 1px solid var(--line); border-radius: 10px; padding: 14px }
+.panel h2 { font-size: 14px; font-weight: 600; color: var(--ink); margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center }
+details.panel > summary { cursor: pointer; font-weight: 600; font-size: 14px; color: var(--ink); list-style: none; display: flex; justify-content: space-between }
 details.panel > summary::after { content: "+"; color: var(--muted) }
 details[open].panel > summary::after { content: "–" }
 details.panel > summary::-webkit-details-marker { display: none }
 .fields { display: grid; gap: 8px; margin-top: 12px }
 .fields label { display: grid; gap: 3px; font-size: 12px; color: var(--muted) }
-.fields input, .fields textarea, textarea.paste { width: 100%; border: 1px solid var(--line); background: var(--bg); color: var(--fg); border-radius: 5px; padding: 6px 8px; font: 13px/1.4 var(--ui) }
-textarea.paste { min-height: 120px; resize: vertical; font-family: var(--mono); font-size: 12px }
-.drop { border: 1.5px dashed var(--line); border-radius: 6px; padding: 12px; text-align: center; color: var(--muted); font-size: 13px; margin-top: 10px }
-.drop.over { border-color: var(--accent); background: var(--soft) }
+.fields input, textarea.paste { width: 100%; border: 1px solid var(--line); background: var(--paper); color: var(--ink); border-radius: 6px; padding: 7px 9px; font: 13px/1.4 var(--ui) }
+textarea.paste { min-height: 100px; resize: vertical; font-family: var(--mono); font-size: 12px; margin-top: 10px }
+.drop { border: 1.5px dashed #9db8d6; background: var(--accent-soft); border-radius: 8px; padding: 14px; text-align: center; color: var(--body); font-size: 13px; margin-top: 10px }
 .drop input { display: none }
-.drop span { color: var(--accent); text-decoration: underline; cursor: pointer }
+.drop span { color: var(--accent); font-weight: 600; text-decoration: underline; cursor: pointer }
+.dropall { position: fixed; inset: 0; z-index: 50; background: rgba(11, 99, 206, .12); display: grid; place-items: center; pointer-events: none }
+.dropall[hidden] { display: none }
+.dropall div { background: var(--paper); border: 2px dashed var(--accent); border-radius: 14px; padding: 28px 40px; font-size: 18px; font-weight: 600; color: var(--accent); box-shadow: var(--shadow) }
 
-/* ── Document pane ── */
-.doc { background: var(--paper); border: 1px solid var(--line); border-radius: 8px; min-width: 0;
-  padding-block: 36px 48px; padding-inline: clamp(18px, 5vw, 56px); font: 15.5px/1.65 var(--doc) }
-.doc .meta { font: 12px var(--mono); color: var(--muted); margin-bottom: 20px; display: flex; gap: 14px; flex-wrap: wrap }
-.doc p { margin: 0 0 1em; max-width: 72ch; white-space: pre-wrap; overflow-wrap: anywhere }
-.doc p.h { font-weight: 600; font-size: 1.05em; margin-top: 1.4em }
+/* ── Document ── */
+.doc { background: var(--paper); border: 1px solid var(--line); border-radius: 10px; min-width: 0;
+  padding-block: 40px 56px; padding-inline: clamp(18px, 5vw, 64px); font: 16.5px/1.72 var(--doc); color: var(--body) }
+.doc > * { max-width: 74ch }
+.doc .meta { font: 12px var(--mono); color: var(--muted); margin-bottom: 22px; display: flex; gap: 14px; flex-wrap: wrap }
+.doc p { margin: 0 0 1.05em; overflow-wrap: anywhere }
+.doc b { color: var(--ink); font-weight: 700 }
 .doc .empty { color: var(--muted); font-family: var(--ui); font-size: 14px }
+.doc .h1 { font: 700 32px/1.2 var(--ui); color: var(--ink); letter-spacing: -.02em; margin: 0 0 .5em }
+.doc .h2 { font: 700 23px/1.3 var(--ui); color: var(--ink); margin: 2em 0 .6em; padding-top: .9em; border-top: 2px solid var(--ink); letter-spacing: -.01em }
+.doc .h3 { font: 600 18px/1.35 var(--ui); color: var(--ink); margin: 1.7em 0 .5em }
+.doc .h4 { font: 600 12.5px/1.4 var(--ui); color: var(--accent); margin: 1.5em 0 .4em; text-transform: uppercase; letter-spacing: .07em }
+.doc .num { color: var(--accent); margin-right: .55em; font-variant-numeric: tabular-nums }
+.doc .toc { margin: 0 0 .15em; font: 14.5px/1.5 var(--ui); color: var(--body) }
+.doc .toc .num { display: inline-block; min-width: 2em }
+.doc .tablewrap { overflow-x: auto; margin: .4em 0 1.4em; max-width: 100%; border: 1px solid var(--line); border-radius: 8px }
+.doc table { border-collapse: collapse; font: 13.5px/1.45 var(--ui); width: 100% }
+.doc th, .doc td { padding: 8px 12px; text-align: left; vertical-align: top; border-bottom: 1px solid var(--line) }
+.doc th { background: var(--soft); color: var(--ink); font-weight: 600; font-size: 12.5px }
+.doc tr:last-child td { border-bottom: 0 }
+.doc td.c, .doc th.c { text-align: center }
+.doc td.k { font-weight: 600; color: var(--ink); background: var(--bg); width: 28%; white-space: normal }
+.doc tbody tr:nth-child(even) td:not(.k) { background: #f8fafd }
 mark { background: transparent; color: inherit; border-bottom: 2.5px solid; border-radius: 2px; padding: 1px 0; cursor: pointer; transition: background .15s }
 mark[data-sev="high"] { border-color: var(--high) } mark[data-sev="high"]:hover, mark[data-sev="high"].active { background: var(--high-bg) }
 mark[data-sev="medium"] { border-color: var(--med) } mark[data-sev="medium"]:hover, mark[data-sev="medium"].active { background: var(--med-bg) }
@@ -84,44 +94,42 @@ mark[data-state="accepted"] { border-color: var(--ok); background: var(--ok-bg);
 mark[data-state="dismissed"] { border-bottom-style: dotted; border-color: var(--dim); cursor: default }
 
 /* ── Popover ── */
-.pop { position: absolute; z-index: 20; width: min(440px, calc(100vw - 32px)); background: var(--paper); border: 1px solid var(--line); border-radius: 8px; box-shadow: var(--shadow); padding: 14px; font: 13px/1.5 var(--ui) }
+.pop { position: absolute; z-index: 20; width: min(450px, calc(100vw - 32px)); background: var(--paper); border: 1px solid var(--line); border-radius: 10px; box-shadow: var(--shadow); padding: 16px; font: 13px/1.5 var(--ui); color: var(--body) }
 .pop .top { display: flex; gap: 8px; align-items: center; margin-bottom: 8px; flex-wrap: wrap }
-.chip { font-size: 11px; font-weight: 600; letter-spacing: .04em; text-transform: uppercase; padding: 2px 7px; border-radius: 4px }
+.chip { font-size: 11px; font-weight: 600; letter-spacing: .04em; text-transform: uppercase; padding: 2px 8px; border-radius: 4px }
 .chip.high { color: var(--high); background: var(--high-bg) } .chip.medium { color: var(--med); background: var(--med-bg) } .chip.low { color: var(--low); background: var(--low-bg) }
 .chip.cat { color: var(--muted); background: var(--soft) }
-.pop h3 { font-size: 14px; font-weight: 600; margin-bottom: 6px }
+.pop h3 { font-size: 15px; font-weight: 600; color: var(--ink); margin-bottom: 6px }
 .pop .issue { color: var(--muted); margin-bottom: 8px }
-.pop .sugg { margin-bottom: 10px }
-.repl { background: var(--soft); border-left: 3px solid var(--ok); padding: 8px 10px; border-radius: 4px; font: 13px/1.5 var(--doc); margin-bottom: 10px; white-space: pre-wrap }
-.cites { display: grid; gap: 6px; margin-bottom: 12px }
+.pop .sugg { margin-bottom: 10px; color: var(--ink) }
+.repl { background: var(--ok-bg); border-left: 3px solid var(--ok); padding: 8px 10px; border-radius: 4px; font: 14px/1.55 var(--doc); margin-bottom: 10px; white-space: pre-wrap; color: var(--ink) }
+.cites { display: grid; gap: 8px; margin-bottom: 12px }
 .cite { font-size: 12px; display: grid; grid-template-columns: auto 1fr; gap: 8px; align-items: start }
-.cite .id { font-family: var(--mono); color: var(--accent); white-space: nowrap }
-.cite a { color: var(--accent) }
+.cite .id { font-family: var(--mono); color: var(--accent); white-space: nowrap; font-weight: 500 }
 .cite .why { color: var(--muted) }
-.cite details { grid-column: 1 / -1 } .cite summary { cursor: pointer; color: var(--muted); font-size: 11px }
+.cite details { margin-top: 2px } .cite summary { cursor: pointer; color: var(--accent); font-size: 11.5px }
 .cite .ex { font-size: 11.5px; color: var(--muted); border-left: 2px solid var(--line); padding-left: 8px; margin-top: 4px; white-space: pre-wrap; max-height: 160px; overflow: auto }
 .pop .acts { display: flex; gap: 8px; align-items: center }
 .btn.ok { background: var(--ok); border-color: var(--ok); color: #fff }
 .pop .done { color: var(--muted); font-size: 12px }
+.note { color: var(--muted); font-size: 12px }
 
 /* ── Suggestion list ── */
 .sum { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 10px }
 .list { display: grid; gap: 6px; max-height: 60vh; overflow: auto }
-.item { border: 1px solid var(--line); border-left-width: 3px; border-radius: 5px; padding: 8px 10px; cursor: pointer; display: grid; gap: 3px }
+.item { border: 1px solid var(--line); border-left-width: 4px; border-radius: 6px; padding: 8px 10px; cursor: pointer; display: grid; gap: 3px }
 .item:hover { background: var(--soft) }
 .item.high { border-left-color: var(--high) } .item.medium { border-left-color: var(--med) } .item.low { border-left-color: var(--low) }
-.item[data-state="accepted"] { border-left-color: var(--ok); opacity: .75 } .item[data-state="dismissed"] { border-left-color: var(--dim); opacity: .5 }
-.item .t { font-weight: 500; font-size: 13px }
+.item[data-state="accepted"] { border-left-color: var(--ok); opacity: .7 } .item[data-state="dismissed"] { border-left-color: var(--dim); opacity: .5 }
+.item .t { font-weight: 600; font-size: 13px; color: var(--ink) }
 .item .c { font-size: 11px; color: var(--muted); display: flex; gap: 6px; flex-wrap: wrap }
-.item .c b { font-weight: 500; color: var(--fg) }
-.note { color: var(--muted); font-size: 12px }
-.err { color: var(--high); font-size: 13px }
-.log { font: 12px/1.5 var(--mono); color: var(--muted); max-height: 140px; overflow: auto; background: var(--bg); border-radius: 5px; padding: 8px; margin-top: 8px; white-space: pre-wrap }
-.export { width: 100%; min-height: 180px; font: 12px/1.45 var(--mono); border: 1px solid var(--line); border-radius: 5px; background: var(--bg); color: var(--fg); padding: 8px; margin-top: 8px }
+.item .c b { font-weight: 600; color: var(--body) }
+.log { font: 12px/1.5 var(--mono); color: var(--muted); max-height: 140px; overflow: auto; background: var(--bg); border-radius: 6px; padding: 8px; margin-top: 8px; white-space: pre-wrap }
+.export { width: 100%; min-height: 180px; font: 12px/1.45 var(--mono); border: 1px solid var(--line); border-radius: 6px; background: var(--bg); color: var(--ink); padding: 8px; margin-top: 8px }
 </style>
 
 <div class="bar">
-  <h1>GLP-1 Protocol Optimizer<small>evidence from 174 completed Phase 3 GLP-1 trials + FDA guidance</small></h1>
+  <div class="brand"><h1>Trial <i>Tune</i></h1><small>GLP-1 protocol review backed by 174 Phase 3 trials and FDA guidance</small></div>
   <div class="status" id="status">Load a protocol, then run the review.</div>
   <button class="btn" id="exportBtn" hidden>Export revised protocol</button>
   <button class="btn" id="stopBtn" hidden>Stop</button>
@@ -132,9 +140,9 @@ mark[data-state="dismissed"] { border-bottom-style: dotted; border-color: var(--
   <section class="doc" id="doc" aria-live="polite"></section>
 
   <aside class="side">
-    <details class="panel" id="inputPanel" open>
+    <details class="panel" id="inputPanel">
       <summary>Protocol input</summary>
-      <div class="drop" id="drop"><input type="file" id="file" accept=".pdf,.txt,.md,text/plain,application/pdf"><span>Upload a PDF or text file</span> or drop it here</div>
+      <div class="drop" id="drop"><input type="file" id="file" accept=".pdf,.txt,.md,text/plain,application/pdf"><span>Upload a PDF or text file</span> or drop it anywhere on this page</div>
       <textarea class="paste" id="paste" placeholder="…or paste the protocol text here" aria-label="Protocol text"></textarea>
       <div style="display:flex;gap:8px;margin-top:8px;flex-wrap:wrap">
         <button class="btn sm" id="usePaste">Use pasted text</button>
@@ -142,13 +150,13 @@ mark[data-state="dismissed"] { border-bottom-style: dotted; border-color: var(--
       </div>
       <div class="fields">
         <div class="lbl" style="margin-top:6px">Optional details (helps retrieval)</div>
-        <label>Indication / disease<input id="f_indication" placeholder="e.g. obesity without T2D"></label>
-        <label>Drug / mechanism<input id="f_drug" placeholder="e.g. semaglutide, GLP-1 RA"></label>
-        <label>Phase<input id="f_phase" placeholder="e.g. Phase 2"></label>
-        <label>Primary endpoint + timepoint<input id="f_endpoint" placeholder="e.g. % change in body weight at week 68"></label>
-        <label>Key eligibility thresholds<input id="f_elig" placeholder="e.g. BMI ≥30, HbA1c <6.5%, no prior GLP-1"></label>
-        <label>Target enrollment<input id="f_n" placeholder="e.g. 120"></label>
-        <label>Trial duration<input id="f_dur" placeholder="e.g. 26 weeks"></label>
+        <label>Indication / disease<input id="f_indication" placeholder="e.g. type 2 diabetes on an SGLT-2 inhibitor"></label>
+        <label>Drug / mechanism<input id="f_drug" placeholder="e.g. once-weekly GLP-1 receptor agonist"></label>
+        <label>Phase<input id="f_phase" placeholder="e.g. Phase 3"></label>
+        <label>Primary endpoint + timepoint<input id="f_endpoint" placeholder="e.g. HbA1c change at week 30"></label>
+        <label>Key eligibility thresholds<input id="f_elig" placeholder="e.g. HbA1c 7.0-10.0%, age 18-75"></label>
+        <label>Target enrollment<input id="f_n" placeholder="e.g. 300"></label>
+        <label>Trial duration<input id="f_dur" placeholder="e.g. 30 weeks"></label>
         <label>Trial structure<input id="f_struct" placeholder="e.g. 2 arms, placebo-controlled, double-blind"></label>
       </div>
     </details>
@@ -156,7 +164,7 @@ mark[data-state="dismissed"] { border-bottom-style: dotted; border-color: var(--
     <div class="panel" id="suggPanel">
       <h2>Suggestions <span class="note" id="count"></span></h2>
       <div class="sum" id="sum"></div>
-      <div class="list" id="list"><div class="note">Run the review to see suggestions. Underlined passages in the document open a card with the proposed change, its rationale, and the trials or guidance it draws on.</div></div>
+      <div class="list" id="list"><div class="note">Run the review to see suggestions. Underlined passages in the document open a card with the proposed change, the reasoning, and the trials or guidance it draws on.</div></div>
       <div class="log" id="log" hidden></div>
     </div>
 
@@ -166,86 +174,55 @@ mark[data-state="dismissed"] { border-bottom-style: dotted; border-color: var(--
     </div>
   </aside>
 </div>
+<div class="dropall" id="dropall" hidden><div>Drop your protocol to load it</div></div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
 <script>/*__DATA__*/</script>
+<script>/*__PDFTEXT__*/</script>
 <script>
 (() => {
 const $ = id => document.getElementById(id);
 const docEl = $('doc'), status = $('status'), list = $('list'), log = $('log');
-let text = '', paras = [], anns = [], ctl = null, sampleFn = null, downloadsNs = null, limits = null;
-let docTitle = 'protocol';
-
-// ── Example protocol (synthetic, deliberately flawed) ──
-const SAMPLE_TITLE = 'Example: NVX-204 Phase 2 obesity protocol (synthetic)';
-const SAMPLE = `# NVX-204 in Adults with Overweight or Obesity: A Phase 2 Study
-
-## 1. Objectives
-The primary objective is to evaluate the effect of NVX-204, a once-weekly subcutaneous GLP-1 receptor agonist, on body weight in adults with overweight or obesity.
-
-## 2. Study Design
-This is a single-arm, open-label, multicenter study. Approximately 60 participants will receive NVX-204 2.4 mg once weekly for 16 weeks. There is no placebo or active comparator arm. Participants will start directly at the 2.4 mg maintenance dose at Week 0.
-
-## 3. Primary Endpoint
-The primary endpoint is change in body weight at Week 16.
-
-## 4. Secondary Endpoints
-Secondary endpoints include change in waist circumference and change in fasting glucose at Week 16.
-
-## 5. Eligibility
-Inclusion criteria: adults aged 18 to 75 years with a body mass index (BMI) of 25 kg/m2 or greater. Participants must have attempted dietary weight loss at least once in the past.
-Exclusion criteria: pregnancy or breastfeeding; use of any investigational drug within 30 days; known hypersensitivity to NVX-204.
-
-## 6. Study Procedures
-Body weight will be measured at screening, Week 0, and Week 16. Participants will receive a leaflet on healthy eating at Week 0. No structured lifestyle intervention is planned.
-
-## 7. Safety
-Adverse events will be recorded at each visit. Participants who experience nausea or vomiting may withdraw from the study at their discretion.
-
-## 8. Statistical Considerations
-A sample size of 60 participants was selected based on feasibility. The primary analysis will be a paired t-test comparing Week 16 body weight to baseline among participants who complete the study.`;
+let text = '', blocks = [], anns = [], ctl = null, sampleFn = null, downloadsNs = null, limits = null, docTitle = 'protocol';
+const esc = s => String(s ?? '').replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+const EXAMPLE_TITLE = 'Example: VELO-SGLT mock protocol';
+const EXAMPLE_FIELDS = { f_indication: 'Type 2 diabetes inadequately controlled on an SGLT-2 inhibitor', f_drug: 'Veltrenatide 1.0 mg once weekly, GLP-1 receptor agonist', f_phase: 'Phase 3b', f_endpoint: 'Change in HbA1c from baseline to Week 30', f_elig: 'Age 18-75, HbA1c 7.0-10.0%, stable SGLT-2 inhibitor 90+ days', f_n: '300', f_dur: '30 weeks treatment + 5 weeks follow-up', f_struct: '2 arms, 1:1, randomized, double-blind, placebo-controlled' };
+const fillFields = f => { for (const id of ['f_indication', 'f_drug', 'f_phase', 'f_endpoint', 'f_elig', 'f_n', 'f_dur', 'f_struct']) $(id).value = (f && f[id]) || ''; };
 
 // ── Retrieval over the embedded index ──
 const tok = s => (s || '').toLowerCase().replace(/[^a-z0-9.%]+/g, ' ').split(' ').filter(w => w.length > 2);
 const STOP = new Set(['the','and','with','for','study','trial','participants','subjects','patients','effect','efficacy','safety','versus','compared','adults','phase','treatment','weekly','once','daily','dose','mg','placebo','type','will','that','this','from','are','were','been','have']);
-function trialRow(t) { return { nct: t.nct, title: t.title, sponsor: t.sponsor, conditions: t.conditions, interventions: t.interventions, enrollment: t.enrollment, start: t.start, primaryCompletion: t.primaryCompletion, design: [t.allocation, t.masking, t.model].filter(Boolean).join(' / '), arms: t.arms, primaryOutcomes: t.primaryOutcomes, ages: t.ages }; }
+const trialRow = t => ({ nct: t.nct, title: t.title, sponsor: t.sponsor, conditions: t.conditions, interventions: t.interventions, enrollment: t.enrollment, start: t.start, primaryCompletion: t.primaryCompletion, design: [t.allocation, t.masking, t.model].filter(Boolean).join(' / '), arms: t.arms, primaryOutcomes: t.primaryOutcomes, ages: t.ages });
 function searchTrials(q, limit = 12) {
   const qs = [...new Set(tok(q).filter(w => !STOP.has(w)))];
-  const scored = TRIALS.map(t => {
-    const hay = (t.title + ' ' + t.conditions.join(' ') + ' ' + t.interventions.join(' ') + ' ' + t.primaryOutcomes.join(' ')).toLowerCase();
-    const elig = t.eligibility.toLowerCase();
+  return TRIALS.map(t => {
+    const hay = (t.title + ' ' + t.conditions.join(' ') + ' ' + t.interventions.join(' ') + ' ' + t.primaryOutcomes.join(' ')).toLowerCase(), elig = t.eligibility.toLowerCase();
     let s = 0; for (const w of qs) { if (hay.includes(w)) s += 3; else if (elig.includes(w)) s += 1; }
     return [s + Math.min(2, (t.enrollment || 0) / 1000), t];
-  }).filter(x => x[0] > 0).sort((a, b) => b[0] - a[0]).slice(0, limit);
-  return scored.map(x => trialRow(x[1]));
+  }).filter(x => x[0] > 0).sort((a, b) => b[0] - a[0]).slice(0, limit).map(x => trialRow(x[1]));
 }
 function getTrial(nct) { const t = TRIALS.find(t => t.nct === String(nct).trim().toUpperCase()); if (!t) throw new Error('No trial ' + nct + ' in the index'); return { ...trialRow(t), eligibility: t.eligibility }; }
 function searchGuidance(q, limit = 4) {
   const qs = [...new Set(tok(q).filter(w => !STOP.has(w)))];
-  return GUIDANCE.map(g => { const h = g.text.toLowerCase(); let s = 0; for (const w of qs) if (h.includes(w)) s += 1; return [s, g]; })
-    .filter(x => x[0] > 0).sort((a, b) => b[0] - a[0]).slice(0, limit).map(x => x[1]);
+  return GUIDANCE.map(g => { const h = g.text.toLowerCase(); let s = 0; for (const w of qs) if (h.includes(w)) s += 1; return [s, g]; }).filter(x => x[0] > 0).sort((a, b) => b[0] - a[0]).slice(0, limit).map(x => x[1]);
 }
 const tools = [
-  { name: 'search_trials', description: 'Keyword search over 174 completed Phase 3 GLP-1 receptor agonist trials with posted results on ClinicalTrials.gov (semaglutide, tirzepatide, liraglutide, dulaglutide, etc.). Returns up to 12 compact records: NCT id, title, conditions, interventions, enrollment, dates, design, arms, primary outcomes with timeframes, age range. Use condition + drug + endpoint words.', inputSchema: { type: 'object', properties: { query: { type: 'string' }, limit: { type: 'number' } }, required: ['query'] }, execute: i => { logLine('search_trials: ' + i.query); return searchTrials(String(i.query), Math.min(15, Number(i.limit) || 12)); } },
-  { name: 'get_trial', description: 'Full record for one NCT id from the index, including the registered eligibility criteria text (inclusion/exclusion thresholds such as BMI, HbA1c, age, prior therapy).', inputSchema: { type: 'object', properties: { nct: { type: 'string' } }, required: ['nct'] }, execute: i => { logLine('get_trial: ' + i.nct); return getTrial(i.nct); } },
-  { name: 'search_guidance', description: 'Keyword search over FDA draft guidance text (2023 Diabetes Mellitus efficacy endpoints; Jan 2025 Obesity and Overweight drug development guidance, Rev. 2). Returns up to 4 passages with ids like FDA-T2D-3 for citation.', inputSchema: { type: 'object', properties: { query: { type: 'string' } }, required: ['query'] }, execute: i => { logLine('search_guidance: ' + i.query); return searchGuidance(String(i.query)); } },
+  { name: 'search_trials', description: 'Keyword search over 174 completed Phase 3 GLP-1 receptor agonist trials with posted results on ClinicalTrials.gov. Returns up to 12 compact records: NCT id, title, conditions, interventions, enrollment, dates, design, arms, primary outcomes with timeframes, age range. Use condition + drug + endpoint words.', inputSchema: { type: 'object', properties: { query: { type: 'string' }, limit: { type: 'number' } }, required: ['query'] }, execute: i => { logLine('search_trials: ' + i.query); return searchTrials(String(i.query), Math.min(15, Number(i.limit) || 12)); } },
+  { name: 'get_trial', description: 'Full record for one NCT id from the index, including registered eligibility criteria text (HbA1c, BMI, age, prior therapy thresholds).', inputSchema: { type: 'object', properties: { nct: { type: 'string' } }, required: ['nct'] }, execute: i => { logLine('get_trial: ' + i.nct); return getTrial(i.nct); } },
+  { name: 'search_guidance', description: 'Keyword search over FDA draft guidance (2023 Diabetes Mellitus efficacy endpoints; Jan 2025 Obesity and Overweight drug development, Rev. 2). Returns up to 4 passages with ids like FDA-T2D-3 for citation.', inputSchema: { type: 'object', properties: { query: { type: 'string' } }, required: ['query'] }, execute: i => { logLine('search_guidance: ' + i.query); return searchGuidance(String(i.query)); } },
 ];
 
 // ── Prompt ──
-function metaBlock() {
-  const f = [['Indication', 'f_indication'], ['Drug / mechanism', 'f_drug'], ['Phase', 'f_phase'], ['Primary endpoint + timepoint', 'f_endpoint'], ['Key eligibility thresholds', 'f_elig'], ['Target enrollment', 'f_n'], ['Duration', 'f_dur'], ['Structure', 'f_struct']];
-  return f.map(([k, id]) => [k, $(id).value.trim()]).filter(x => x[1]).map(x => `- ${x[0]}: ${x[1]}`).join('\n');
-}
+function metaBlock() { return [['Indication', 'f_indication'], ['Drug / mechanism', 'f_drug'], ['Phase', 'f_phase'], ['Primary endpoint + timepoint', 'f_endpoint'], ['Key eligibility thresholds', 'f_elig'], ['Target enrollment', 'f_n'], ['Duration', 'f_dur'], ['Structure', 'f_struct']].map(([k, id]) => [k, $(id).value.trim()]).filter(x => x[1]).map(x => `- ${x[0]}: ${x[1]}`).join('\n'); }
+const seedQuery = () => (metaBlock() + ' ' + text.slice(0, 4000)).replace(/\n/g, ' ');
 function buildPrompt(withTools) {
-  const meta = metaBlock();
-  const seedQ = (meta + ' ' + text.slice(0, 4000)).replace(/\n/g, ' ');
-  const seeds = searchTrials(seedQ, 10);
+  const meta = metaBlock(), seeds = searchTrials(seedQuery(), 10);
   const body = text.length > 170000 ? text.slice(0, 170000) + '\n\n[Protocol truncated for length]' : text;
-  const guidanceToc = GUIDANCE.map(g => `${g.id}: ${g.text.slice(0, 110).replace(/\n/g, ' ')}…`).join('\n');
-  const fullGuidance = withTools ? '' : '\n\nFDA GUIDANCE PASSAGES (cite by id):\n' + GUIDANCE.map(g => `[${g.id}] ${g.text}`).join('\n\n');
+  const toc = GUIDANCE.map(g => `${g.id}: ${g.text.slice(0, 110).replace(/\n/g, ' ')}…`).join('\n');
+  const full = withTools ? '' : '\n\nFDA GUIDANCE PASSAGES (cite by id):\n' + GUIDANCE.map(g => `[${g.id}] ${g.text}`).join('\n\n');
   return `You are a senior clinical development reviewer specializing in GLP-1 receptor agonist trials (obesity, type 2 diabetes, cardiometabolic). Review the protocol below and propose concrete improvements grounded in what completed, successful Phase 3 GLP-1 trials did and what FDA guidance recommends.
 
-Review areas: eligibility thresholds (BMI, HbA1c, age, weight-related comorbidities, prior therapy, exclusions such as pancreatitis, MTC/MEN2, diabetic retinopathy), primary endpoint definition and timepoint, co-primary/responder endpoints, sample size and enrollment, trial duration, arms, comparator and placebo use, dose escalation/titration, randomization and masking, lifestyle intervention background, retention and missing-data handling, safety monitoring and GI tolerability management, statistical analysis and estimands, visit schedule.
+Review areas: eligibility thresholds, primary endpoint definition and timepoint, secondary endpoints and testing hierarchy, sample size and power assumptions, trial duration and visit schedule (flowchart), arms, comparator and placebo use, dose escalation/titration, randomization and masking, rescue therapy and estimands, missing-data handling, retention, safety monitoring (pancreatitis, thyroid, retinopathy, hypoglycemia, GI tolerability), pregnancy testing, statistical analysis, registration and transparency.
 
 ${withTools ? 'TOOLS: call search_trials (several queries at once is fine), then get_trial on the 3-6 most relevant trials to read their actual eligibility and endpoint text, and search_guidance for FDA positions. Cite only NCT ids and guidance ids you actually retrieved or that appear in the seed list below.' : 'Cite only NCT ids from the seed list below and guidance ids from the passages provided.'}
 
@@ -253,66 +230,109 @@ SEED TRIALS (most similar completed Phase 3 trials, compact):
 ${JSON.stringify(seeds)}
 
 FDA GUIDANCE INDEX:
-${guidanceToc}${fullGuidance}
+${toc}${full}
 
-${meta ? 'USER-PROVIDED PROTOCOL DETAILS:\n' + meta + '\n\n' : ''}PROTOCOL TEXT:
+${meta ? 'USER-PROVIDED PROTOCOL DETAILS:\n' + meta + '\n\n' : ''}PROTOCOL TEXT (tables appear as pipe-separated rows):
 <<<
 ${body}
 >>>
 
 OUTPUT: Reply with ONLY a JSON array of 6 to 14 annotation objects, most important first. Shape:
-{"id":"a1","quote":"exact verbatim passage copied character-for-character from the protocol, 20-240 chars, within one paragraph","category":"eligibility|endpoint|sample_size|duration|design|dosing|safety|statistics|procedures","severity":"high|medium|low","title":"short label (≤8 words)","issue":"what is weak or risky, 1-2 sentences","suggestion":"what to change and why, citing the evidence, 1-3 sentences","replacement":"full rewritten passage to swap in for the quote, same scope, or null if the change is structural and cannot be a text swap","citations":[{"ref":"NCT04184622","why":"one clause on what this source shows"},{"ref":"FDA-T2D-4","why":"..."}]}
-Rules: quote must be an exact substring of the protocol (no ellipses, no paraphrase, no markdown headers). Prefer the most specific sentence or clause. Each annotation needs at least one citation. Do not invent trial facts: numbers you cite (enrollment, duration, thresholds) must come from retrieved records.`;
+{"id":"a1","quote":"exact verbatim passage copied character-for-character from the protocol, 15-240 chars","category":"eligibility|endpoint|sample_size|duration|design|dosing|safety|statistics|procedures","severity":"high|medium|low","title":"short label (8 words max)","issue":"what is weak or risky, 1-2 sentences","suggestion":"what to change and why, citing the evidence, 1-3 sentences","replacement":"full rewritten passage to swap in for the quote, same scope, or null if the change is structural and cannot be a text swap","citations":[{"ref":"NCT04184622","why":"one clause on what this source shows"},{"ref":"FDA-T2D-4","why":"..."}]}
+Rules: the quote must be an exact substring of the protocol and lie inside ONE paragraph or ONE table cell: never include a "|" character, never span two paragraphs or two cells, no ellipses, no paraphrase, no heading numbers. Prefer the most specific sentence or clause. For a table cell, quote only that cell's text and make the replacement a replacement for that cell only. Each annotation needs at least one citation. Do not invent trial facts: numbers you cite (enrollment, duration, thresholds) must come from retrieved records.`;
 }
 
-// ── Document rendering ──
-function setText(t, title) {
-  text = t.replace(/\r\n?/g, '\n').replace(/[ \t]+\n/g, '\n').replace(/\n{3,}/g, '\n\n');
-  if (title) docTitle = title;
-  anns = []; render(); renderList(); $('exportBtn').hidden = true; $('exportPanel').hidden = true;
-  status.textContent = `Loaded "${docTitle}" (${text.length.toLocaleString()} chars). Ready to review.`;
+// ── Load text ──
+function stripKey(t) {
+  let last = -1, m; const re = /Appendix: Answer key[^\n]*/gi;
+  while ((m = re.exec(t))) last = m.index;
+  let stripped = false;
+  if (last > t.length * 0.5) { t = t.slice(0, last).trimEnd(); stripped = true; }
+  return { t: t.replace(/Appendix: Answer key[^\n]*\n*/gi, ''), stripped };
 }
-function splitParas() {
-  paras = []; let pos = 0;
-  for (const chunk of text.split(/\n\n+/)) { const start = text.indexOf(chunk, pos); paras.push({ start, end: start + chunk.length, s: chunk }); pos = start + chunk.length; }
+function setText(t, title, keepKey) {
+  t = t.replace(/\r\n?/g, '\n').replace(/[ \t]+\n/g, '\n').replace(/\n{3,}/g, '\n\n');
+  const k = keepKey ? { t, stripped: false } : stripKey(t); text = k.t; docTitle = title || docTitle;
+  anns = []; render(); renderList(); $('exportBtn').hidden = true; $('exportPanel').hidden = true;
+  status.className = 'status'; status.textContent = `Loaded "${docTitle}" (${text.length.toLocaleString()} chars).${k.stripped ? ' An answer-key appendix was removed.' : ''} Ready to review.`;
+}
+function parseBlocks() {
+  blocks = []; let pos = 0;
+  for (const chunk of text.split(/\n\n+/)) { const start = text.indexOf(chunk, pos); blocks.push({ start, end: start + chunk.length, s: chunk }); pos = start + chunk.length; }
 }
 function locate(a) {
   const q = a.quote || ''; let i = text.indexOf(q);
-  if (i < 0) { const ws = q.replace(/\s+/g, ' ').trim(); const re = new RegExp(ws.split(' ').map(w => w.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')).join('\\s+')); const m = re.exec(text); if (m) { i = m.index; a.quote = m[0]; } }
-  if (i < 0 && q.length > 40) { const head = q.slice(0, 40); i = text.indexOf(head); if (i >= 0) a.quote = text.slice(i, i + Math.min(q.length, 240)); }
+  if (i < 0) { const ws = q.replace(/\s+/g, ' ').trim(); if (ws) { const m = new RegExp(ws.split(' ').map(w => w.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')).join('\\s+')).exec(text); if (m) { i = m.index; a.quote = m[0]; } } }
+  if (i < 0 && q.length > 40) { i = text.indexOf(q.slice(0, 40)); if (i >= 0) a.quote = text.slice(i, i + Math.min(q.length, 240)); }
   a.start = i; a.end = i < 0 ? -1 : i + a.quote.length; return i >= 0;
 }
-function render() {
-  splitParas();
-  const placed = anns.filter(a => a.start >= 0).sort((x, y) => x.start - y.start);
-  const used = []; for (const a of placed) { if (used.some(u => a.start < u.end && a.end > u.start)) { a.hidden = true; continue; } a.hidden = false; used.push(a); }
-  docEl.innerHTML = '';
-  if (!text) { docEl.innerHTML = `<p class="empty">No protocol loaded. Upload a PDF, paste text, or load the example protocol from the panel.</p>`; return; }
-  const meta = document.createElement('div'); meta.className = 'meta'; meta.textContent = `${docTitle} · ${text.length.toLocaleString()} chars · ${paras.length} paragraphs`; docEl.appendChild(meta);
-  for (const p of paras) {
-    const el = document.createElement('p'); let s = p.s; let isH = false;
-    if (/^#{1,6}\s/.test(s)) { isH = true; }
-    const inP = used.filter(a => a.start >= p.start && a.end <= p.end);
-    if (!inP.length) { el.textContent = isH ? s.replace(/^#+\s*/, '') : s; }
-    else {
-      let cur = p.start;
-      for (const a of inP) {
-        el.appendChild(document.createTextNode(text.slice(cur, a.start)));
-        const m = document.createElement('mark'); m.dataset.id = a.id; m.dataset.sev = a.severity; if (a.state) m.dataset.state = a.state; m.textContent = text.slice(a.start, a.end); m.setAttribute('role', 'button'); m.tabIndex = 0; el.appendChild(m); cur = a.end;
-      }
-      el.appendChild(document.createTextNode(text.slice(cur, p.end)));
-      if (isH) el.firstChild.textContent = el.firstChild.textContent.replace(/^#+\s*/, '');
+
+// ── Render document ──
+let used = [];
+function inline(parent, start, end, labelEnd = 0) {
+  const ins = used.filter(a => a.start >= start && a.end <= end).sort((x, y) => x.start - y.start); const fr = []; let cur = start;
+  for (const a of ins) { if (a.start > cur) fr.push({ f: cur, t: a.start }); fr.push({ f: a.start, t: a.end, a }); cur = a.end; }
+  if (cur < end) fr.push({ f: cur, t: end });
+  for (const x of fr) {
+    const parts = !x.a && labelEnd > x.f && labelEnd < x.t ? [{ f: x.f, t: labelEnd }, { f: labelEnd, t: x.t }] : [x];
+    for (const p of parts) {
+      const s = text.slice(p.f, p.t);
+      if (x.a) { const m = document.createElement('mark'); m.dataset.id = x.a.id; m.dataset.sev = x.a.severity; if (x.a.state) m.dataset.state = x.a.state; m.textContent = s; m.tabIndex = 0; m.setAttribute('role', 'button'); parent.appendChild(m); }
+      else if (p.t <= labelEnd) { const b = document.createElement('b'); b.textContent = s; parent.appendChild(b); }
+      else parent.appendChild(document.createTextNode(s));
     }
-    if (isH) el.classList.add('h');
-    docEl.appendChild(el);
   }
+}
+function tableCells(b) {
+  const rows = []; let off = b.start;
+  for (const line of b.s.split('\n')) {
+    const cells = []; const pipes = []; for (let i = 0; i < line.length; i++) if (line[i] === '|') pipes.push(i);
+    for (let k = 0; k + 1 < pipes.length; k++) { const raw = line.slice(pipes[k] + 1, pipes[k + 1]); const lead = raw.length - raw.trimStart().length; const cs = off + pipes[k] + 1 + lead; cells.push({ s: cs, e: cs + raw.trim().length, v: raw.trim() }); }
+    rows.push(cells); off += line.length + 1;
+  }
+  return rows;
+}
+function renderTable(b) {
+  const rows = tableCells(b); const ncol = Math.max(...rows.map(r => r.length));
+  const kv = ncol === 2, wrap = document.createElement('div'); wrap.className = 'tablewrap'; const tbl = document.createElement('table'); wrap.appendChild(tbl);
+  let tbody = document.createElement('tbody');
+  rows.forEach((r, ri) => {
+    const head = !kv && ri === 0; if (head) { const th = document.createElement('thead'); tbl.appendChild(th); tbody = document.createElement('tbody'); tbl.appendChild(tbody); }
+    const tr = document.createElement('tr'); (head ? tbl.tHead : tbody).appendChild(tr);
+    r.forEach((c, ci) => { const el = document.createElement(head ? 'th' : 'td'); if (kv && ci === 0) el.className = 'k'; else if (!kv && ci > 0 && c.v.length <= 2) el.className = 'c'; else if (head && ci > 0 && ncol > 4) el.className = 'c'; inline(el, c.s, c.e); tr.appendChild(el); });
+  });
+  if (!tbl.tBodies.length) tbl.appendChild(tbody);
+  return wrap;
+}
+function headingOf(s) {
+  let m = /^(#{1,6})\s+(.*)$/.exec(s); if (m) return { level: Math.min(4, m[1].length + 1), num: '', skip: m[1].length + 1, label: m[2] };
+  m = /^(\d+(?:\.\d+)*)\s+([A-Z].{0,78})$/.exec(s); if (m && !/[-,;]$/.test(s)) return { level: Math.min(4, m[1].split('.').length + 1), num: m[1], skip: m[1].length + 1 };
+  return null;
+}
+function render() {
+  parseBlocks();
+  const placed = anns.filter(a => a.start >= 0).sort((x, y) => x.start - y.start); used = [];
+  for (const a of placed) { if (used.some(u => a.start < u.end && a.end > u.start)) { a.hidden = true; continue; } a.hidden = false; used.push(a); }
+  // ── Quotes that cross a block or cell boundary cannot be underlined ──
+  const fits = a => blocks.some(b => a.start >= b.start && a.end <= b.end) && !(text.slice(a.start, a.end).includes('\n') || text.slice(a.start, a.end).includes('|'));
+  used = used.filter(a => { if (fits(a)) return true; a.hidden = true; return false; });
+  docEl.innerHTML = '';
+  if (!text) { docEl.innerHTML = '<p class="empty">No protocol loaded. Upload a PDF, paste text, or load the example from the Protocol input panel.</p>'; return; }
+  const meta = document.createElement('div'); meta.className = 'meta'; meta.textContent = `${docTitle} · ${text.length.toLocaleString()} chars`; docEl.appendChild(meta);
+  blocks.forEach((b, bi) => {
+    if (b.s.startsWith('|')) { docEl.appendChild(renderTable(b)); return; }
+    const toc = /^\d+\.\s+\S/.exec(b.s); const h = bi === 0 && !toc ? { level: 1, num: '', skip: 0 } : (toc ? null : headingOf(b.s));
+    if (h) { const el = document.createElement('div'); el.className = 'h' + h.level; if (h.num) { const n = document.createElement('span'); n.className = 'num'; n.textContent = h.num; el.appendChild(n); } inline(el, b.start + h.skip, b.end); docEl.appendChild(el); return; }
+    if (toc) { const el = document.createElement('div'); el.className = 'toc'; const n = document.createElement('span'); n.className = 'num'; n.textContent = toc[0].trim().split(/\s/)[0]; el.appendChild(n); inline(el, b.start + toc[0].length - 1, b.end); docEl.appendChild(el); return; }
+    const el = document.createElement('p'); const lm = /^([A-Z][A-Za-z\/() -]{1,45}\.)\s/.exec(b.s); inline(el, b.start, b.end, lm && lm[1].split(' ').length <= 6 ? b.start + lm[1].length : 0); docEl.appendChild(el);
+  });
 }
 
 // ── Popover ──
 let pop = null;
 function closePop() { if (pop) { pop.remove(); pop = null; } document.querySelectorAll('mark.active').forEach(m => m.classList.remove('active')); }
 function citeHtml(c) {
-  const ref = String(c.ref || '').trim(); const why = esc(c.why || '');
+  const ref = String(c.ref || '').trim(), why = esc(c.why || '');
   if (/^NCT\d{8}$/i.test(ref)) { const t = TRIALS.find(t => t.nct === ref.toUpperCase()); const ttl = t ? `${esc(t.title)} (n=${t.enrollment || '?'}, ${esc(t.sponsor || '')})` : 'ClinicalTrials.gov record'; return `<div class="cite"><a class="id" href="https://clinicaltrials.gov/study/${ref.toUpperCase()}" target="_blank" rel="noopener">${ref.toUpperCase()}</a><div>${ttl}<div class="why">${why}</div></div></div>`; }
   const g = GUIDANCE.find(g => g.id === ref);
   if (g) return `<div class="cite"><span class="id">${esc(ref)}</span><div>${esc(g.source)}<div class="why">${why}</div><details><summary>Show passage</summary><div class="ex">${esc(g.text)}</div></details></div></div>`;
@@ -328,37 +348,34 @@ function openPop(mark) {
     <div class="lbl" style="margin-bottom:4px">Sources</div><div class="cites">${(a.citations || []).map(citeHtml).join('')}</div>
     <div class="acts">${done ? `<span class="done">${done}</span><button class="btn sm" data-act="undo">Undo</button>` : `<button class="btn sm ok" data-act="accept">Accept</button><button class="btn sm" data-act="dismiss">Dismiss</button>`}</div>`;
   document.body.appendChild(pop);
-  const r = mark.getBoundingClientRect(); const pw = pop.offsetWidth; let left = window.scrollX + r.left; if (left + pw > window.scrollX + window.innerWidth - 16) left = window.scrollX + window.innerWidth - 16 - pw; left = Math.max(window.scrollX + 16, left);
+  const r = mark.getBoundingClientRect(), pw = pop.offsetWidth; let left = window.scrollX + r.left; if (left + pw > window.scrollX + window.innerWidth - 16) left = window.scrollX + window.innerWidth - 16 - pw; left = Math.max(window.scrollX + 16, left);
   let top = window.scrollY + r.bottom + 8; if (r.bottom + pop.offsetHeight + 8 > window.innerHeight && r.top > pop.offsetHeight + 8) top = window.scrollY + r.top - pop.offsetHeight - 8;
   pop.style.left = left + 'px'; pop.style.top = top + 'px';
-  pop.addEventListener('click', e => { const b = e.target.closest('button[data-act]'); if (!b) return; act(a, b.dataset.act); });
+  pop.addEventListener('click', e => { const b = e.target.closest('button[data-act]'); if (b) act(a, b.dataset.act); });
 }
 function act(a, what) {
-  if (what === 'accept') { a.state = 'accepted'; if (a.replacement && a.start >= 0) { a.original = text.slice(a.start, a.end); text = text.slice(0, a.start) + a.replacement + text.slice(a.end); a.quote = a.replacement; relocateAll(); } }
+  if (what === 'accept') { a.state = 'accepted'; if (a.replacement && a.start >= 0) { a.original = text.slice(a.start, a.end); text = text.slice(0, a.start) + a.replacement + text.slice(a.end); a.quote = a.replacement; anns.forEach(locate); } }
   else if (what === 'dismiss') a.state = 'dismissed';
-  else if (what === 'undo') { if (a.state === 'accepted' && a.original != null && a.start >= 0) { text = text.slice(0, a.start) + a.original + text.slice(a.end); a.quote = a.original; a.original = null; relocateAll(); } a.state = null; }
+  else if (what === 'undo') { if (a.state === 'accepted' && a.original != null && a.start >= 0) { text = text.slice(0, a.start) + a.original + text.slice(a.end); a.quote = a.original; a.original = null; anns.forEach(locate); } a.state = null; }
   closePop(); render(); renderList();
 }
-function relocateAll() { for (const x of anns) locate(x); }
 docEl.addEventListener('click', e => { const m = e.target.closest('mark'); if (m) { e.stopPropagation(); openPop(m); } });
 docEl.addEventListener('keydown', e => { const m = e.target.closest('mark'); if (m && (e.key === 'Enter' || e.key === ' ')) { e.preventDefault(); openPop(m); } });
 document.addEventListener('click', e => { if (pop && !pop.contains(e.target) && !e.target.closest('mark')) closePop(); });
 document.addEventListener('keydown', e => { if (e.key === 'Escape') closePop(); });
 
-// ── Sidebar list ──
+// ── Suggestion list ──
 function renderList() {
-  const live = anns.filter(a => a.start >= 0 && !a.hidden); const lost = anns.length - live.length;
+  const live = anns.filter(a => a.start >= 0 && !a.hidden), lost = anns.length - live.length;
   $('count').textContent = anns.length ? `${live.filter(a => !a.state).length} open · ${live.filter(a => a.state === 'accepted').length} accepted` : '';
-  const sev = ['high', 'medium', 'low'].map(s => [s, live.filter(a => a.severity === s).length]).filter(x => x[1]);
-  $('sum').innerHTML = sev.map(([s, n]) => `<span class="chip ${s}">${n} ${s}</span>`).join('');
+  $('sum').innerHTML = ['high', 'medium', 'low'].map(s => [s, live.filter(a => a.severity === s).length]).filter(x => x[1]).map(([s, n]) => `<span class="chip ${s}">${n} ${s}</span>`).join('');
   if (!anns.length) return;
   list.innerHTML = live.map(a => `<div class="item ${a.severity}" data-id="${a.id}" ${a.state ? `data-state="${a.state}"` : ''}><div class="t">${esc(a.title)}</div><div class="c"><b>${esc(a.category.replace('_', ' '))}</b>${(a.citations || []).slice(0, 3).map(c => `<span>${esc(c.ref)}</span>`).join('')}${a.state ? `<span>· ${a.state}</span>` : ''}</div></div>`).join('')
-    + (lost ? `<div class="note">${lost} suggestion${lost > 1 ? 's' : ''} could not be matched to the text and ${lost > 1 ? 'were' : 'was'} left out.</div>` : '');
+    + (lost ? `<div class="note">${lost} suggestion${lost > 1 ? 's' : ''} could not be matched to a single paragraph or table cell and ${lost > 1 ? 'were' : 'was'} left out.</div>` : '');
   list.querySelectorAll('.item').forEach(el => el.addEventListener('click', () => { const m = docEl.querySelector(`mark[data-id="${el.dataset.id}"]`); if (m) { m.scrollIntoView({ block: 'center', behavior: 'smooth' }); setTimeout(() => openPop(m), 350); } }));
   $('exportBtn').hidden = false;
 }
 function logLine(s) { log.hidden = false; log.textContent += s + '\n'; log.scrollTop = log.scrollHeight; }
-const esc = s => String(s ?? '').replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
 
 // ── Analyze ──
 const ERR = { not_granted: 'Claude access was not allowed for this page, so the review cannot run.', sampling_disabled: 'Claude is not available on this account.', rate_limited: 'Too many requests right now. Wait a minute and try again.', prompt_too_large: 'The protocol is too long for one review. Paste a shorter section.', invalid_json: 'The reviewer returned something that was not a valid suggestion list. Try again.', refused: 'The reviewer declined this input.', upstream_error: 'The connection dropped mid-review. Try again.', session_expired: 'Sign in again to continue.', empty_completion: 'The reviewer returned nothing. Try again or shorten the protocol.' };
@@ -367,8 +384,9 @@ async function analyze() {
   if (!sampleFn) { status.textContent = 'Claude is not available in this view, so the review cannot run.'; return; }
   closePop(); anns = []; render(); list.innerHTML = ''; log.textContent = ''; log.hidden = true; $('exportPanel').hidden = true;
   const withTools = !!(limits && limits.tools);
-  ctl = new AbortController(); $('analyzeBtn').disabled = true; $('stopBtn').hidden = false; status.className = 'status busy'; status.textContent = withTools ? 'Reviewing: searching prior trials and guidance, then drafting suggestions (30–90 s)…' : 'Reviewing protocol against seed trials and guidance…';
-  logLine('seed trials: ' + searchTrials((metaBlock() + ' ' + text.slice(0, 4000)).replace(/\n/g, ' '), 10).map(t => t.nct).join(', '));
+  ctl = new AbortController(); $('analyzeBtn').disabled = true; $('stopBtn').hidden = false; status.className = 'status busy';
+  status.textContent = withTools ? 'Reviewing: searching prior trials and guidance, then drafting suggestions (30-90 s)…' : 'Reviewing protocol against seed trials and guidance…';
+  logLine('seed trials: ' + searchTrials(seedQuery(), 10).map(t => t.nct).join(', '));
   try {
     const opts = { signal: ctl.signal, modelTier: 'default', onText: ({ text: t }) => { status.textContent = `Drafting suggestions… ${t.length.toLocaleString()} chars`; } };
     if (withTools) opts.tools = tools;
@@ -389,12 +407,12 @@ $('stopBtn').addEventListener('click', () => ctl && ctl.abort());
 // ── Export ──
 function changeLog() {
   const acc = anns.filter(a => a.state === 'accepted'), dis = anns.filter(a => a.state === 'dismissed'), open = anns.filter(a => !a.state && a.start >= 0);
-  const fmt = a => `- [${a.severity}] ${a.title} (${a.category})\n  Issue: ${a.issue}\n  Change: ${a.suggestion}\n  Sources: ${(a.citations || []).map(c => `${c.ref}${/^NCT/.test(c.ref) ? ` <https://clinicaltrials.gov/study/${c.ref}>` : ''} — ${c.why || ''}`).join('; ')}`;
-  return `\n\n---\n# Change log (GLP-1 Protocol Optimizer)\n\n## Accepted (${acc.length})\n${acc.map(fmt).join('\n') || '(none)'}\n\n## Open (${open.length})\n${open.map(fmt).join('\n') || '(none)'}\n\n## Dismissed (${dis.length})\n${dis.map(a => `- ${a.title}`).join('\n') || '(none)'}\n`;
+  const fmt = a => `- [${a.severity}] ${a.title} (${a.category})\n  Issue: ${a.issue}\n  Change: ${a.suggestion}\n  Sources: ${(a.citations || []).map(c => `${c.ref}${/^NCT/.test(c.ref) ? ` <https://clinicaltrials.gov/study/${c.ref}>` : ''} - ${c.why || ''}`).join('; ')}`;
+  return `\n\n---\n# Change log (Trial Tune)\n\n## Accepted (${acc.length})\n${acc.map(fmt).join('\n') || '(none)'}\n\n## Open (${open.length})\n${open.map(fmt).join('\n') || '(none)'}\n\n## Dismissed (${dis.length})\n${dis.map(a => `- ${a.title}`).join('\n') || '(none)'}\n`;
 }
 $('exportBtn').addEventListener('click', async () => {
   const out = text + changeLog(); $('exportText').value = out; $('exportPanel').hidden = false; $('exportPanel').scrollIntoView({ behavior: 'smooth' });
-  if (downloadsNs) { try { await downloadsNs.save({ filename: docTitle.replace(/[^\w.-]+/g, '_').slice(0, 60) + '_revised.md', data: out }); } catch (e) { /* viewer declined or unavailable; textarea remains */ } }
+  if (downloadsNs) { try { await downloadsNs.save({ filename: docTitle.replace(/[^\w.-]+/g, '_').slice(0, 60) + '_revised.md', data: out }); } catch (e) { /* declined or unavailable; textarea remains */ } }
 });
 $('copyBtn').addEventListener('click', async () => { const ta = $('exportText'); try { await navigator.clipboard.writeText(ta.value); $('copyBtn').textContent = 'Copied'; setTimeout(() => $('copyBtn').textContent = 'Copy', 1500); } catch { ta.focus(); ta.select(); } });
 
@@ -402,30 +420,29 @@ $('copyBtn').addEventListener('click', async () => { const ta = $('exportText');
 async function readFile(f) {
   if (!f) return; status.className = 'status busy'; status.textContent = `Reading ${f.name}…`;
   try {
-    if (/pdf$/i.test(f.name) || f.type === 'application/pdf') {
+    if (/\.pdf$/i.test(f.name) || f.type === 'application/pdf') {
       if (!window.pdfjsLib) throw new Error('PDF reader did not load');
       pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
-      const pdf = await pdfjsLib.getDocument({ data: new Uint8Array(await f.arrayBuffer()) }).promise; const pages = [];
-      for (let i = 1; i <= pdf.numPages; i++) { const pg = await pdf.getPage(i); const c = await pg.getTextContent(); let line = '', lastY = null, out = '';
-        for (const it of c.items) { if (lastY !== null && Math.abs(it.transform[5] - lastY) > 2) { out += line.trimEnd() + '\n'; line = ''; } line += it.str + (it.hasEOL ? '' : ' '); lastY = it.transform[5]; }
-        pages.push((out + line).replace(/-\n(?=[a-z])/g, '').replace(/([^.\n:;])\n(?=[a-z(])/g, '$1 ')); }
-      setText(pages.join('\n\n'), f.name);
+      const pdf = await pdfjsLib.getDocument({ data: new Uint8Array(await f.arrayBuffer()) }).promise, pages = [];
+      for (let i = 1; i <= pdf.numPages; i++) pages.push((await (await pdf.getPage(i)).getTextContent()).items);
+      setText(pdfPagesToText(pages), f.name);
     } else setText(await f.text(), f.name);
     $('inputPanel').open = false;
   } catch (e) { status.className = 'status'; status.textContent = `Could not read ${f.name}: ${e.message || e}`; }
-  status.className = 'status';
 }
 $('file').addEventListener('change', e => readFile(e.target.files[0]));
-const drop = $('drop'); drop.querySelector('span').addEventListener('click', () => $('file').click());
-['dragenter', 'dragover'].forEach(ev => drop.addEventListener(ev, e => { e.preventDefault(); drop.classList.add('over'); }));
-['dragleave', 'drop'].forEach(ev => drop.addEventListener(ev, e => { e.preventDefault(); drop.classList.remove('over'); }));
-drop.addEventListener('drop', e => readFile(e.dataTransfer.files[0]));
+$('drop').querySelector('span').addEventListener('click', () => $('file').click());
+let dragDepth = 0; const dropall = $('dropall'), hasFiles = e => e.dataTransfer && [...e.dataTransfer.types].includes('Files');
+window.addEventListener('dragenter', e => { if (hasFiles(e)) { dragDepth++; dropall.hidden = false; } });
+window.addEventListener('dragleave', e => { if (hasFiles(e) && --dragDepth <= 0) { dragDepth = 0; dropall.hidden = true; } });
+window.addEventListener('dragover', e => { if (hasFiles(e)) e.preventDefault(); });
+window.addEventListener('drop', e => { if (!hasFiles(e)) return; e.preventDefault(); dragDepth = 0; dropall.hidden = true; readFile(e.dataTransfer.files[0]); });
 $('usePaste').addEventListener('click', () => { const v = $('paste').value.trim(); if (v) { setText(v, 'Pasted protocol'); $('inputPanel').open = false; } });
-$('loadSample').addEventListener('click', () => { setText(SAMPLE, SAMPLE_TITLE); $('f_indication').value = 'Overweight or obesity'; $('f_drug').value = 'NVX-204, GLP-1 receptor agonist'; $('f_phase').value = 'Phase 2'; $('f_endpoint').value = 'Change in body weight at Week 16'; $('f_elig').value = 'BMI ≥25, age 18-75'; $('f_n').value = '60'; $('f_dur').value = '16 weeks'; $('f_struct').value = 'Single arm, open label, no placebo'; $('inputPanel').open = false; });
+function loadExample() { setText(window.EXAMPLE, EXAMPLE_TITLE, true); fillFields(EXAMPLE_FIELDS); }
+$('loadSample').addEventListener('click', () => { loadExample(); $('inputPanel').open = false; });
 
 // ── Boot ──
-setText(SAMPLE, SAMPLE_TITLE); $('f_indication').value = 'Overweight or obesity'; $('f_drug').value = 'NVX-204, GLP-1 receptor agonist'; $('f_phase').value = 'Phase 2'; $('f_endpoint').value = 'Change in body weight at Week 16'; $('f_elig').value = 'BMI ≥25, age 18-75'; $('f_n').value = '60'; $('f_dur').value = '16 weeks'; $('f_struct').value = 'Single arm, open label, no placebo';
-status.textContent = 'Example protocol loaded. Upload your own PDF or run the review now.';
+loadExample(); status.textContent = 'Example protocol loaded. Drop in your own PDF anywhere on the page, or run the review now.';
 (async () => {
   if (!window.claude || !window.claude.use) { status.textContent = 'Open this page inside claude.ai to run the review.'; return; }
   sampleFn = await claude.use('sample'); downloadsNs = await claude.use('downloads');

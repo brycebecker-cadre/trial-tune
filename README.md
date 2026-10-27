@@ -1,4 +1,4 @@
-# GLP-1 Protocol Optimizer
+# Trial Tune
 
 Upload a GLP-1 clinical trial protocol (PDF or text) and get inline, Grammarly-style suggestions on how to strengthen it. Every suggestion is grounded in completed Phase 3 GLP-1 trials with posted results on ClinicalTrials.gov, or in FDA draft guidance, and cites its sources. Accept a suggestion to apply the rewritten text in place; export the revised protocol with a change log.
 
